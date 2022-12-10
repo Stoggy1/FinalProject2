@@ -45,9 +45,17 @@ class Cookie:
         self.win = win
 
     def draw(self) -> None:
+        """
+        Class Method that blits Cookie on Surface
+        """
         self.win.blit(self.image, (275, 150))
 
     def collidepoint(self, mouse_pos: tuple) -> pygame.Rect:
+        """
+        Class Method that checks if clicked in certain position
+        :param mouse_pos: x and y cords for where the mouse was clicked
+        :return:
+        """
         return pygame.Rect(self.x, self.y, self.width, self.height).collidepoint(mouse_pos)
 
 
