@@ -27,8 +27,15 @@ sound_crunch = pygame.mixer.Sound(os.path.join('sounds', 'crunch.mp3'))
 
 # Classes
 class Cookie:
-    def __init__(self, image, win):
-
+    """
+    Creates a cookie for the users to click on!
+    """
+    def __init__(self, image: str, win: pygame.Surface) -> None:
+        """
+        Constructor for cookie class that creates the cookie obj
+        :param image: image of the cookie
+        :param win: surface the cookie is going to be placed on
+        """
         self.image = pygame.image.load(image)
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -37,31 +44,11 @@ class Cookie:
 
         self.win = win
 
-    def draw(self):
+    def draw(self) -> None:
         self.win.blit(self.image, (275, 150))
 
-    def collidepoint(self, mouse_pos):
+    def collidepoint(self, mouse_pos: tuple) -> pygame.Rect:
         return pygame.Rect(self.x, self.y, self.width, self.height).collidepoint(mouse_pos)
-
-
-class Score:
-    def __init__(self, x, y, win, player):
-        self.x = x
-        self.y = y
-        self.width = 100
-        self.height = 100
-        self.win = win
-        self.player = player
-
-    def draw(self):
-        font = pygame.font.SysFont('arial', 24)
-
-        SCORE = font.render('{} cookies'.format(int(self.player.score)), True, WHITE)
-        CPS = font.render('CPS: {}'.format(int(self.player.cps)), True, WHITE)
-
-        # LABEL POS ON SCREEN
-        self.win.blit(SCORE, (275, 50))
-        self.win.blit(CPS, (275, 100))
 
 
 class Player:
@@ -74,8 +61,53 @@ class Player:
         self.score = score
 
 
+class Score:
+    """
+    Creates the score and cps label that changes according to current value
+    """
+    def __init__(self, x: int, y: int, win: pygame.Surface, player: Player) -> None:
+        """
+        Constructor method that creates the Score
+        :param x: x position
+        :param y: y position
+        :param win: Surface labes will be placed on
+        :param player: Player class
+        """
+        self.x = x
+        self.y = y
+        self.width = 100
+        self.height = 100
+        self.win = win
+        self.player = player
+
+    def draw(self) -> None:
+        """
+        Class method that draws and blits Score and CPS
+        """
+        font = pygame.font.SysFont('arial', 24)
+
+        SCORE = font.render('{} cookies'.format(int(self.player.score)), True, WHITE)
+        CPS = font.render('CPS: {}'.format(int(self.player.cps)), True, WHITE)
+
+        # LABEL POS ON SCREEN
+        self.win.blit(SCORE, (275, 50))
+        self.win.blit(CPS, (275, 100))
+
 class Item:
-    def __init__(self, base_cost, cps, image, win, pos1, pos2):
+    """
+    Class that holds the base operations for what an Item does
+        Also holds correlated attributes that each Item shares
+    """
+    def __init__(self, base_cost: int, cps: int, image: str, win: pygame.Surface, pos1: int, pos2: int) -> None:
+        """
+        Constuctor method that initializes the Item
+        :param base_cost: Initial cost for an Item
+        :param cps: The amount of Cookies that will be added per second according to total amount of Items
+        :param image: Image of the Item
+        :param win: Surface that the Image will be placed on
+        :param pos1: Places Item Image
+        :param pos2: Places Item Cost
+        """
         self.amount = 0
         self.bc = base_cost
         self.cps = cps
@@ -89,27 +121,56 @@ class Item:
         self.rect.topleft = self.placement_pos1
 
     def draw(self):
+        """
+        Class method that draws Item image and Cost on Surface
+        """
         self.win.blit(self.image, self.placement_pos1)
         self.win.blit(self.display_price, self.placement_pos2)
 
     def update(self):
+        """
+        Class method that updates base cost of items
+            Changes the Label value associated with Item Cost
+            Blits item on Surface
+        """
         self.bc *= 2
         self.display_price = FONT.render('{}'.format(int(self.bc)), True, WHITE)
         self.win.blit(self.display_price, self.placement_pos2)
 
 
 class Gma(Item):
-    def __init__(self, win):
+    """
+    Class that creates Gma Item!
+    """
+    def __init__(self, win: pygame.Surface) -> None:
+        """
+        Constructor Method that initializes GMA Item
+        :param win: Surface Item is placed on
+        """
         super().__init__(10, 1, pygame.image.load(os.path.join('assets', 'gma.png')), win, (0, 50), (115, 50))
 
 
 class Gpa(Item):
-    def __init__(self, win):
+    """
+    Class that creates Gpa Item!
+    """
+    def __init__(self, win: pygame.Surface) -> None:
+        """
+        Constructor Method that initializes GPA Item
+        :param win: Surface Item is placed on
+        """
         super().__init__(100, 2, pygame.image.load(os.path.join('assets', 'grandfather.png')), win, (0, 200), (115, 200))
 
 
 class Crumble(Item):
-    def __init__(self, win):
+    """
+    Class that creates Crumble Cookie Item!
+    """
+    def __init__(self, win: pygame.Surface) -> None:
+        """
+        Constructor Method that initializes Crumble Cookie Item
+        :param win: Surface Item is placed on
+        """
         super().__init__(1000, 10, pygame.image.load(os.path.join('assets', 'crumble_cookie.png')), win, (0, 350), (115, 350))
 
 
@@ -129,7 +190,10 @@ crumble = Crumble(win)
 
 
 # Functions
-def draw():
+def draw() -> None:
+    """
+    Function that Draws everything on Game Surface
+    """
     win.blit(background, (0, 0))
     cookie.draw()
     score_display.draw()
@@ -139,7 +203,11 @@ def draw():
     pygame.display.update()
 
 
-def run_game():
+def run_game() -> None:
+    """
+    Function that runs the game loop
+    :return:
+    """
     # Game loop
     run = True
     while run:
@@ -201,6 +269,10 @@ def run_game():
 
 
 def test():
+    """
+    Function that I used to test code on the back end without running game!
+
+    """
     global gma, gpa, crumble
 
 
