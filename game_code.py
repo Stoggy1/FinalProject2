@@ -52,12 +52,22 @@ class Cookie:
 
 
 class Player:
-    def __init__(self):
+    """
+    Creates a player class
+    """
+    def __init__(self) -> None:
+        """
+        Constructor Method that Initializes Player
+        """
         self.score = 0
         self.multiplier = 1
         self.cps = 0
 
-    def setScore(self, score):
+    def setScore(self, score: int) -> None:
+        """
+        Class Method that is used to cheat and set the Score the whatever you want
+        :param score: The amount you want the score to be set at!
+        """
         self.score = score
 
 
